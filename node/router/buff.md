@@ -13,13 +13,24 @@
 #   code:200, 
 #   data: {
 #      serve: [], //服务类型
-#      state: []  //订单状态
+#      state: [], //订单状态
+#      vehicle: []//汽车类型
 #   }}
 
 # 添加服务
 # api: buff/addserve
 # methods: post
-# req: { str: '' }
+# req: { str: '',url: '' }
+# res: {
+#   code:200, 
+#   data: null
+#   msg: '添加成功'
+#   }
+
+# 添加汽车类型
+# api: buff/addvehicle
+# methods: post
+# req: { name: '',money: 1(number) }
 # res: {
 #   code:200, 
 #   data: null

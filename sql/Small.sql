@@ -26,6 +26,7 @@ CREATE TABLE `the_order` (
   `deleteTime` varchar(16) NOT NULL COMMENT '订单取消时间',
   `oType` int NOT NULL COMMENT '服务类型',
   `oState` int NOT NULL COMMENT '订单状态',
+  `oVehicle` int COMMENT '汽车类型',
   `oTime` varchar(16) NOT NULL COMMENT '预约时间',
   `oRemark` varchar(128) NOT NULL COMMENT '备注',
   `openId` varchar(128) NOT NULL COMMENT '唯一标示',
@@ -52,6 +53,12 @@ CREATE TABLE `state` (
   `name` varchar(8) NOT NULL COMMENT '状态名称'
 );
 
+CREATE TABLE `vehicle_type` (
+  `id` INT NOT NULL COMMENT '编号' PRIMARY KEY AUTO_INCREMENT,
+  `name` varchar(32) NOT NULL COMMENT '车型',
+  `money` INT NOT NULL COMMENT '价格'
+);
+
 INSERT INTO `admin` (`username`,`password`) VALUES ('admin','123456');
 
 INSERT INTO `state` (`name`) VALUES
@@ -65,6 +72,16 @@ INSERT INTO `state` (`name`) VALUES
 -- ('家具安装'),
 -- ('清洁服务'),
 -- ('搬家');
+
+INSERT INTO `vehicle_type` (`name`,`money`) VALUES
+('小型车', 66),
+('微型车', 88),
+('紧凑车型', 99),
+('中等车型', 128),
+('高级车型', 168),
+('豪华车型', 288),
+('CDV车型', 388),
+('SUV等车型', 988);
 
 INSERT INTO `the_order` (`id`, `oId`, `oName`, `oTel`, `oAddress`, `createTime`, `deleteTime`, `oType`, `oState`, `oTime`, `oRemark`, `openId`) VALUES 
 (NULL, '13437024352606386584', '郏绮梅', '17075319386', '广东深圳', '0', '0', '1', '0', '0', '测试测试测试测试测试测试测试测试', '0'),

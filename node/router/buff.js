@@ -22,13 +22,20 @@ router.get('/',(req,res) => {
     let sql = `SELECT * FROM state`
     pool.query(sql,[],(err,result) => {
       obj.state = result
-      res.send({code: 200, data: obj, msg: '获取缓存成功'})
+      getvehicle()
     })
   })
+  function getvehicle () {
+    let sql = `SELECT * FROM vehicle_type`
+    pool.query(sql,[],(err,result) => {
+      obj.vehicle = result
+      res.send({code: 200, data: obj, msg: '获取缓存成功'})
+    })
+  }
 })
 // 后台管理 - 添加服务类型
-router.get('/addserve',(req,res) => {
-  let v = req.query,
+router.post('/addserve',(req,res) => {
+  let v = req.body,
       sql = `INSERT INTO serve (name, icon) VALUES (?,?)`,
       parameter = tools.parameter(v,['str','url'])
 
@@ -42,6 +49,27 @@ router.get('/addserve',(req,res) => {
       res.send({code: 200, data: null, msg: '添加服务成功'})
     :
       res.send({code: 401, data: null, msg: '添加服务出错'})
+  })
+})
+
+// 后台管理 - 添加车类型
+router.post('/addvehicle',(req,res) => {
+  let v = req.body,
+      sql = `INSERT INTO serve (name, money) VALUES (?,?)`,
+      parameter = tools.parameter(v,['name','money'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+
+  if (typeof(v.money) != number) return '金额类型错误 (number)'
+  
+  pool.query(sql,[v.name,v.money],(err,result) => {
+    result.affectedRows > 0?
+      res.send({code: 200, data: null, msg: '添加汽车类型成功'})
+    :
+      res.send({code: 401, data: null, msg: '添加汽车类型出错'})
   })
 })
 module.exports = router

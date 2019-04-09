@@ -25,6 +25,7 @@
 #   oTime       预约时间
 #   oRemark     备注
 #   openId      唯一标识
+#   oVehicle    车型ID (新增)
 # }
 # res:
 #   true: {{code: 200, msg: '下单成功'}}
