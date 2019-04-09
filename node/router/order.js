@@ -9,6 +9,7 @@ const express = require('express')
 const router = express.Router()
 const pool = require('../pool.js')
 const tools = require('../util/generate.js')
+const config = require('../config.js')
 let arr = ['id','oId','oName','oTel','oAddress','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle']
 // 后台管理 - 获取订单接口
 router.get('/allorder', (req, res) => {
@@ -118,7 +119,7 @@ router.post('/addevaluate',(req,res) => {
     pool.query(testSql,[v.oId],(err,result) => {
       let {evaluate, oState, createTime, deleteTime} = result[0]
       if (evaluate == null) 
-        if (oState == 4 && createTime > 0 && deleteTime > 0) // 订单完成的id 待优化
+        if (oState == config.orderOver && createTime > 0 && deleteTime > 0) // 订单完成的id 待优化
           open()
         else {
           res.send({code: 401, data: null, msg: '请在订单完成后评论,评论失败'})
@@ -171,6 +172,26 @@ router.get('/getorder',(req,res) => {
   pool.query(sql,[v.str,v.str],(err,result) => {
     if (err) throw err
     res.send({code: 200, data: {total: result.length, data: result}, msg: '查询成功'})
+  })
+})
+
+router.get('getnotvaluate',(req,res) => {
+  let sql = `SELECT * FROM the_order WHERE openId = ? && oState = ${config.orderOver} && evaluate is null`,
+      v = req.query,
+      parameter = tools.parameter(v,['openId'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+  
+  pool.query(sql,[v.openId],(err,result) => {
+    if (err) throw err
+    if (result.length > 0) {
+      res.send({code: 200, data: {total: result.length, data: result}, msg: '请求用户订单成功'})
+    } else {
+      res.send({code: 200, data: null, msg: '该用户暂无订单'})
+    }
   })
 })
 module.exports = router
