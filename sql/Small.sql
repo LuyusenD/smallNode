@@ -19,7 +19,7 @@ CREATE TABLE `user` (
 CREATE TABLE `the_order` (
   `id` int NOT NULL COMMENT '编号' PRIMARY KEY AUTO_INCREMENT,
   `oId` varchar(128) NOT NULL COMMENT '订单编号' UNIQUE,
-  `oName` varchar(8) NOT NULL COMMENT '姓名',
+  `oName` varchar(32) NOT NULL COMMENT '姓名',
   `oTel` varchar(11) NOT NULL COMMENT '联系方式',
   `oAddress` varchar(64) NOT NULL COMMENT '地址',
   `createTime` varchar(16) NOT NULL COMMENT '创建时间',
