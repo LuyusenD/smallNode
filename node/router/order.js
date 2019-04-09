@@ -104,9 +104,9 @@ router.post('/editstate',(req,res) => {
   })
 })
 // 用户评论
-router.get('/addevaluate',(req,res) => {
+router.post('/addevaluate',(req,res) => {
   let sql = 'UPDATE the_order SET evaluate = ? WHERE md5 = ?',
-      v = req.query,
+      v = req.body,
       parameter = tools.parameter(v,['evaluate','oId'])
 
   if (parameter) {
