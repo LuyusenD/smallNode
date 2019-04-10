@@ -119,7 +119,7 @@ router.post('/addevaluate',(req,res) => {
     pool.query(testSql,[v.oId],(err,result) => {
       let {evaluate, oState, createTime, deleteTime} = result[0]
       if (evaluate == null) 
-        if (oState == config.orderOver && createTime > 0 && deleteTime > 0) // 订单完成的id 待优化
+        if (oState == config.orderOver && parseInt(createTime) > 0 && parseInt(deleteTime) > 0) // 订单完成的id 待优化
           open()
         else {
           res.send({code: 401, data: null, msg: '请在订单完成后评论,评论失败'})
