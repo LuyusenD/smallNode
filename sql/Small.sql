@@ -31,7 +31,8 @@ CREATE TABLE `the_order` (
   `oRemark` varchar(128) NOT NULL COMMENT '备注',
   `openId` varchar(128) NOT NULL COMMENT '唯一标示',
   `md5` varchar(128) NOT NULL COMMENT '订单密文',
-  `evaluate` varchar(128) COMMENT '评价'
+  `evaluate` varchar(128) COMMENT '评价',
+  `score` varchar(8) COMMENT '评分'
 );
 
 CREATE TABLE `admin` (

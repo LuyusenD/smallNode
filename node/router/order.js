@@ -106,9 +106,9 @@ router.post('/editstate',(req,res) => {
 })
 // 用户评论
 router.post('/addevaluate',(req,res) => {
-  let sql = 'UPDATE the_order SET evaluate = ? WHERE md5 = ?',
+  let sql = 'UPDATE the_order SET evaluate = ? , score = ?WHERE md5 = ?',
       v = req.body,
-      parameter = tools.parameter(v,['evaluate','oId'])
+      parameter = tools.parameter(v,['evaluate','oId','score'])
 
   if (parameter) {
     res.send(parameter)
@@ -129,7 +129,7 @@ router.post('/addevaluate',(req,res) => {
         res.send({code: 401, data: null, msg: '已评价,请勿重复评价'})
     })
   }).then(() => {
-    pool.query(sql,[v.evaluate,v.oId],(err,result) => {
+    pool.query(sql,[v.evaluate,v.score,v.oId],(err,result) => {
       if (result.affectedRows > 0) {
         res.send({code: 200, data: null, msg: '评价成功'})
       } else {
