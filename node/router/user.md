@@ -71,7 +71,7 @@
 #   {{code: 200, data: null, msg: '注销用户成功'}}
 
 # 后台管理 - 修改密码
-# api: user/forget
+# api: user/changepassword
 # methods: post
 # req: {
 #   username   //用户的name
@@ -82,3 +82,13 @@
 # res:
 #   {{code: 200, data: null, msg: '修改密码成功'}}
 #
+
+# 后台管理 - 忘记密码
+# api: user/forget
+# methods: post
+# req: {
+#   username   //用户的name
+#   email   //用户邮箱
+# }
+# res:
+#   {{code: 200, data: null, msg: '新密码已发送邮箱 请查看'}}

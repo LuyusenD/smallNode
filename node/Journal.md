@@ -42,3 +42,11 @@
 #     1. sql order新增评分字段
 #   优化api
 #     1. 评价接口新增字段 score评分
+#
+# 2019/04/11
+#   新增(更新)
+#     1. user/changepassword   更新为修改密码接口
+#     2. user/forget   更新为忘记密码接口
+#	  3. sql  admin表 新增 email字段
+#   优化api
+#     1. 新增 admin 用户  新增字段 email

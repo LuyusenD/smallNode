@@ -244,13 +244,15 @@ router.post('/forget',(req,res) => {
         res.send({code: 401, data: null, msg: '非法请求'})
         return
       }
-      open(v.id)
+      open(result[0])
     })
-  }).then(id => {
-    let sql = `UPDATE admin SET password = ? WHERE id = ?;`
-    pool.query(sql,[tools.randomStr(),id],(err,result) => {
+  }).then(item => {
+    let sql = `UPDATE admin SET password = ? WHERE id = ?;`,
+        newPwd = tools.randomStr()
+    pool.query(sql,[newPwd,item.id],(err,result) => {
       if (err) throw err
-        
+      tools.postMail(item.email,item.username,newPwd)
+      res.send({code: 200, data: null, msg: '密码已发送至邮箱,请查看'})
     })
   })
 

@@ -5,6 +5,7 @@
  */
 'use strict'
 const md5 = require('md5')
+const postEmail = require('./post_email.js')
 
 class tools {
   constructor () {
@@ -31,7 +32,10 @@ class tools {
   randomStr () {
     return Math.random().toString(36).substr(6)
   }
-  postMail () {}
+  postMail (a,b,c) {
+    // toEmail,user,pwd
+    postEmail(a,b,c)
+  }
 }
 
 exports = module.exports = new tools()

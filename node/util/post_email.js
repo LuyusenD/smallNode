@@ -2,8 +2,10 @@
 const nodemailer = require('nodemailer')
 const smtpTransport = require('nodemailer-smtp-transport')
 const config = require('../config')
-console.log(config)
-// exports = module.exports = function () {
+
+exports = module.exports = function (to,user,pwd) {
+  console.log(to,user,pwd)
+
   const transport = nodemailer.createTransport(smtpTransport({
     host: config.EMAIL_HOST,
     port: config.EMAIL_PORT,
@@ -15,12 +17,10 @@ console.log(config)
   }));
 
   const mailOptions = {
-    from: config.EMAIL_FROM,
-    to: 'd7242586@163.com', //如有多个，用逗号隔开
-    subject: config.EMAIL_TITLE, 
-    html: `<p> 系统已为您更新 好朋友<GoodMate> 账户密码，请登陆后立即修改新密码 </p>
-账号：214
-密码：394939 ` //邮件内容，可以为html
+    from: `${config.Name} ${config.EMAIL_FROM}`,
+    to, //如有多个，用逗号隔开
+    subject: config.Name + config.EMAIL_TITLE, 
+    html: `<p> 系统已为您更新 ${config.Name} 账户密码，请登陆后立即修改新密码 </p> <p> 账号：${user}</p> <p> 密码：${pwd}</p>`
   };
 
   transport.sendMail(mailOptions, function(error, info){
@@ -30,4 +30,4 @@ console.log(config)
       console.log('Message sent: ' + info.response);
     }
   });
-// }
+}
