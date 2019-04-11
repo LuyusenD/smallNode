@@ -40,6 +40,7 @@ CREATE TABLE `admin` (
   `username` varchar(16) NOT NULL COMMENT '用户名' UNIQUE,
   `password` varchar(32) NOT NULL COMMENT '密码',
   `ip` varchar(64) COMMENT 'ip地址',
+  `email` varchar(128) NOT NULL COMMENT '邮箱',
   `login` int COMMENT '登录数量' default 0
 );
 
@@ -60,7 +61,7 @@ CREATE TABLE `vehicle_type` (
   `money` INT NOT NULL COMMENT '价格'
 );
 
-INSERT INTO `admin` (`username`,`password`) VALUES ('admin','123456');
+INSERT INTO `admin` (`username`,`password`,`email`) VALUES ('admin','123456','7242586@qq.com');
 
 INSERT INTO `state` (`name`) VALUES
 ('未付款'),

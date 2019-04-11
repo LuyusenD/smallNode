@@ -133,7 +133,7 @@ router.post('/out',(req,res) => {
 
 router.post('/addadmin',(req,res) => {
   let v = req.body,
-      arr = ["username","password","adminId","adminName"],
+      arr = ["username","password","email","adminId","adminName"],
       parameter = tools.parameter(v,arr)
 
   if (parameter) {
@@ -151,9 +151,9 @@ router.post('/addadmin',(req,res) => {
     })
   })
   .then(() => {
-    let sql = `INSERT INTO admin (id, username, password, ip, login) VALUES (NULL, ?, ?, NULL, 0);`
+    let sql = `INSERT INTO admin (id, username, password, ip, login, email) VALUES (NULL, ?, ?, NULL, 0,?);`
 
-    pool.query(sql,[v.username,v.password],(err,result) => {
+    pool.query(sql,[v.username,v.password,v.email],(err,result) => {
       if (result) {
         res.send({code: 200, data: null, msg: '添加管理用户成功'})
       } else {
@@ -194,7 +194,7 @@ router.post('/deladmin',(req,res) => {
   })
 })
 
-router.post('/forget', (req,res) => {
+router.post('/changepassword', (req,res) => {
   let v = req.body,
       arr = ["id","username","oldpassword","newpassword"],
       parameter = tools.parameter(v,arr)
@@ -225,5 +225,34 @@ router.post('/forget', (req,res) => {
     })
   })
   
+})
+
+router.post('/forget',(req,res) => {
+  let v = req.body,
+      arr = ["username","email"],
+      parameter = tools.parameter(v,arr)
+
+  if (parameter) {
+  res.send(parameter)
+  return
+  }
+
+  new Promise(open => {
+    let sql = `SELECT * FROM admin WHERE username = ? && email = ?`
+    pool.query(sql,[v.username,v.email],(err,result) => {
+      if (result.length < 1) {
+        res.send({code: 401, data: null, msg: '非法请求'})
+        return
+      }
+      open(v.id)
+    })
+  }).then(id => {
+    let sql = `UPDATE admin SET password = ? WHERE id = ?;`
+    pool.query(sql,[tools.randomStr(),id],(err,result) => {
+      if (err) throw err
+        
+    })
+  })
+
 })
 module.exports = router

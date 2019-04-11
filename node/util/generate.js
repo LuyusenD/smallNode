@@ -28,6 +28,10 @@ class tools {
   md5 (v) {
     return md5(md5(md5(v))) + 'xn'
   }
+  randomStr () {
+    return Math.random().toString(36).substr(6)
+  }
+  postMail () {}
 }
 
 exports = module.exports = new tools()

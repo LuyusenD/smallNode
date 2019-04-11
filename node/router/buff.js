@@ -63,7 +63,10 @@ router.post('/addvehicle',(req,res) => {
     return
   }
 
-  if (typeof(v.money) != number) return '金额类型错误 (number)'
+  if (typeof(v.money) != 'number') { 
+    res.send({code: 401, data: null, msg: '金额类型错误 (number)'})
+    return
+  }
   
   pool.query(sql,[v.name,v.money],(err,result) => {
     result.affectedRows > 0?
