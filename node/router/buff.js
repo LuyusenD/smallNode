@@ -63,12 +63,7 @@ router.post('/addvehicle',(req,res) => {
     return
   }
 
-  if (typeof(v.money) != 'number') { 
-    res.send({code: 401, data: null, msg: '金额类型错误 (number)'})
-    return
-  }
-  
-  pool.query(sql,[v.name,v.money],(err,result) => {
+  pool.query(sql,[v.name,Number(v.money)],(err,result) => {
     result.affectedRows > 0?
       res.send({code: 200, data: null, msg: '添加汽车类型成功'})
     :

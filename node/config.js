@@ -5,7 +5,8 @@ let config = {
 	EMAIL_PORT: 465,
 	EMAIL_USER: '941332394@qq.com',
 	EMAIL_SKY: 'fkcdndxpjzstbeid',
-	EMAIL_FROM: ''
+	EMAIL_FROM: '"好朋友" <941332394@qq.com>',
+	EMAIL_TITLE: '好伙伴<GoodMate> 用户通知'
 }
 
 module.exports = config;
