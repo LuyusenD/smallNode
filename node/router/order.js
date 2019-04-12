@@ -175,7 +175,7 @@ router.get('/getorder',(req,res) => {
   })
 })
 
-router.get('getnotvaluate',(req,res) => {
+router.get('/getnotvaluate',(req,res) => {
   let sql = `SELECT * FROM the_order WHERE openId = ? && oState = ${config.orderOver} && evaluate is null`,
       v = req.query,
       parameter = tools.parameter(v,['openId'])
@@ -194,4 +194,5 @@ router.get('getnotvaluate',(req,res) => {
     }
   })
 })
+
 module.exports = router
