@@ -247,7 +247,7 @@ router.post('/forget',(req,res) => {
       open(result[0])
     })
   }).then(item => {
-    let sql = `UPDATE admin SET password = ? WHERE id = ?;`,
+    let sql = `UPDATE admin SET password = ?, login = 0 WHERE id = ?;`,
         newPwd = tools.randomStr()
     pool.query(sql,[newPwd,item.id],(err,result) => {
       if (err) throw err
