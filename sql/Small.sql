@@ -20,7 +20,7 @@ CREATE TABLE `the_order` (
   `id` int NOT NULL COMMENT '编号' PRIMARY KEY AUTO_INCREMENT,
   `oId` varchar(128) NOT NULL COMMENT '订单编号' UNIQUE,
   `oName` varchar(32) NOT NULL COMMENT '姓名',
-  `oTel` varchar(11) NOT NULL COMMENT '联系方式',
+  `oTel` varchar(14) NOT NULL COMMENT '联系方式',
   `oAddress` varchar(64) NOT NULL COMMENT '地址',
   `createTime` varchar(16) NOT NULL COMMENT '创建时间',
   `deleteTime` varchar(16) NOT NULL COMMENT '订单取消时间',
@@ -47,7 +47,8 @@ CREATE TABLE `admin` (
 CREATE TABLE `serve` (
   `id` INT NOT NULL COMMENT '编号' PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(8) NOT NULL COMMENT '服务名称',
-  `icon` varchar(256) NOT NULL COMMENT '服务icon'
+  `icon` varchar(256) NOT NULL COMMENT '服务icon',
+  `money` INT NOT NULL COMMENT '价格'
 );
 
 CREATE TABLE `state` (

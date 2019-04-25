@@ -50,3 +50,9 @@
 #	  3. sql  admin表 新增 email字段
 #   优化api
 #     1. 新增 admin 用户  新增字段 email
+#
+# 2019/04/16
+#   新增(更新)
+#     1. addserve  更新接口
+#	  2. sql  serve表 新增 money字段
+#   优化api

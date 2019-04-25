@@ -1,6 +1,6 @@
 let config = {
 	Name: '好伙伴-GoodMate',
-	host: 'localhost:3000/',
+	host: 'https://89655027.ngrok.io/',
 	orderOver: 4, //完成订单id
 	EMAIL_HOST: 'smtp.qq.com',
 	EMAIL_PORT: 465,

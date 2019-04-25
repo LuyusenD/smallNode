@@ -168,7 +168,9 @@ router.get('/getorder',(req,res) => {
     res.send(parameter)
     return
   }
-
+  if (v.str.includes('+')) {
+    v.str = v.str.split(3)
+  }
   pool.query(sql,[v.str,v.str],(err,result) => {
     if (err) throw err
     res.send({code: 200, data: {total: result.length, data: result}, msg: '查询成功'})
