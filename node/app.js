@@ -7,8 +7,14 @@
 
 const bodyParse = require("body-parser")
 const express=require('express')
+const https = require('https')
+const fs = require('fs')
 let app = express()
 
+const option = {
+	key: fs.readFileSync('/etc/nginx/cert/2123911.key'),
+	cert: fs.readFileSync('/etc/nginx/cert/2123911.pem')
+}
 app.use(bodyParse.urlencoded({extended:false,limit: '50mb'}))
 
 let order = require('./router/order.js');
@@ -18,6 +24,7 @@ let upload = require('./router/upload.js');
 
 app.listen(3000)
 
+// https.createServer(option, app).listen(443)
 app.use(express.static(__dirname + '/static'))
 // 挂载
 app.use('/order', order);
