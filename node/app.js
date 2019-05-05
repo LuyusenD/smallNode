@@ -7,14 +7,14 @@
 
 const bodyParse = require("body-parser")
 const express=require('express')
-const https = require('https')
+// const https = require('https')
 const fs = require('fs')
 let app = express()
 
-const option = {
-	key: fs.readFileSync('/etc/nginx/cert/2123911.key'),
-	cert: fs.readFileSync('/etc/nginx/cert/2123911.pem')
-}
+// const option = {
+	// key: fs.readFileSync('/etc/nginx/cert/2123911.key'),
+	// cert: fs.readFileSync('/etc/nginx/cert/2123911.pem')
+// }
 app.use(bodyParse.urlencoded({extended:false,limit: '50mb'}))
 
 let order = require('./router/order.js');
