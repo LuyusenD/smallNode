@@ -21,7 +21,7 @@ router.post('/',(req,res) => {
     if (err)
       console.log(err)
   })
-  res.write(JSON.stringify({code: 200, data: {url: `${config.host}${imgName}.png`}, msg: '上传成功'}))
+  res.write(JSON.stringify({code: 200, data: {url: `${imgName}.png`}, msg: '上传成功'}))
   res.end()
 })
 

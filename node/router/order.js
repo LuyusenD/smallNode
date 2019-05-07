@@ -161,17 +161,23 @@ router.get('/userorder',(req,res) => {
 // 根据手机号码或者订单号返回订单信息
 router.get('/getorder',(req,res) => {
   let v = req.query,
-      sql = `SELECT * FROM the_order WHERE oId = ? OR oTel = ?`,
-      parameter = tools.parameter(v,['str'])
+      parameter = tools.parameter(v,['str']),
+      str = ''
 
   if (parameter) {
     res.send(parameter)
     return
   }
-  if (v.str.includes('+')) {
-    v.str = v.str.split(3)
+  console.log(v)
+  if (v.str.includes('good')) {
+    str = v.str.split(6)[1]
+  } else {
+    str = v.str
   }
-  pool.query(sql,[v.str,v.str],(err,result) => {
+
+  let sql = `SELECT * FROM the_order WHERE oId = ? OR oTel LIKE '%${str}' `
+  
+  pool.query(sql,[str],(err,result) => {
     if (err) throw err
     res.send({code: 200, data: {total: result.length, data: result}, msg: '查询成功'})
   })
