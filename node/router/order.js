@@ -66,6 +66,7 @@ router.post('/delorder',(req,res) => {
   new Promise((open,err) => {
     let testSql = `SELECT deleteTime FROM the_order WHERE md5 = ?`
     pool.query(testSql,[v.oId],(err,result) => {
+      if (err) throw err;
       if (!result[0]) {
         res.send({code: 401, msg: '订单不存在'})
       } else {
@@ -77,6 +78,7 @@ router.post('/delorder',(req,res) => {
     })
   }).then(() => {
     pool.query(sql,[time,v.oId],(err,result) => {
+      if (err) throw err;
       if (result.affectedRows > 0) 
         res.send({code: 200, data: null, msg: '取消订单成功'})
       else
@@ -97,6 +99,7 @@ router.post('/editstate',(req,res) => {
     return
   }
   pool.query(sql,[v.oState,v.oId],(err,result) => {
+    if (err) throw err;
     if (result.affectedRows > 0) {
       res.send({code: 200, data: null, msg: '修改状态成功'})
     } else {
@@ -117,6 +120,7 @@ router.post('/addevaluate',(req,res) => {
   new Promise(open => {
     let testSql = `SELECT evaluate, oState, createTime, deleteTime FROM the_order WHERE md5 = ?`
     pool.query(testSql,[v.oId],(err,result) => {
+      if (err) throw err;
       let {evaluate, oState, createTime, deleteTime} = result[0]
       if (evaluate == null) 
         if (oState == config.orderOver && parseInt(createTime) > 0 && parseInt(deleteTime) > 0) // 订单完成的id 待优化
@@ -130,6 +134,7 @@ router.post('/addevaluate',(req,res) => {
     })
   }).then(() => {
     pool.query(sql,[v.evaluate,v.score,v.oId],(err,result) => {
+      if (err) throw err;
       if (result.affectedRows > 0) {
         res.send({code: 200, data: null, msg: '评价成功'})
       } else {
@@ -178,6 +183,7 @@ router.get('/getorder',(req,res) => {
   let sql = `SELECT * FROM the_order WHERE oId = ? OR oTel LIKE '%${str}' `
   
   pool.query(sql,[str],(err,result) => {
+    
     if (err) throw err
     res.send({code: 200, data: {total: result.length, data: result}, msg: '查询成功'})
   })

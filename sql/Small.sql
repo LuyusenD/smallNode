@@ -20,7 +20,7 @@ CREATE TABLE `the_order` (
   `id` int NOT NULL COMMENT '编号' PRIMARY KEY AUTO_INCREMENT,
   `oId` varchar(128) NOT NULL COMMENT '订单编号' UNIQUE,
   `oName` varchar(32) NOT NULL COMMENT '姓名',
-  `oTel` varchar(14) NOT NULL COMMENT '联系方式',
+  `oTel` varchar(32) NOT NULL COMMENT '联系方式',
   `oAddress` varchar(64) NOT NULL COMMENT '地址',
   `createTime` varchar(16) NOT NULL COMMENT '创建时间',
   `deleteTime` varchar(16) NOT NULL COMMENT '订单取消时间',
@@ -42,6 +42,11 @@ CREATE TABLE `admin` (
   `ip` varchar(64) COMMENT 'ip地址',
   `email` varchar(128) NOT NULL COMMENT '邮箱',
   `login` int COMMENT '登录数量' default 0
+);
+
+CREATE TABLE `banner` (
+  `id` INT NOT NULL COMMENT '序号' PRIMARY KEY AUTO_INCREMENT,
+  `url` varchar(256) NOT NULL COMMENT 'bannerUrl'
 );
 
 CREATE TABLE `serve` (

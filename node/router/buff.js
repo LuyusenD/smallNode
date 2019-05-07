@@ -23,12 +23,14 @@ router.get('/',(req,res) => {
   new Promise((open) => {
     let sql = `SELECT * FROM serve`
     pool.query(sql,[],(err,result) => {
+      if (err) throw err;
       obj.serve = result
       open()
     })
   }).then(() => {
     let sql = `SELECT * FROM state`
     pool.query(sql,[],(err,result) => {
+      if (err) throw err;
       obj.state = result
       getvehicle()
     })
@@ -36,6 +38,7 @@ router.get('/',(req,res) => {
   function getvehicle () {
     let sql = `SELECT * FROM vehicle_type`
     pool.query(sql,[],(err,result) => {
+      if (err) throw err;
       obj.vehicle = result
       buffs = JSON.parse(JSON.stringify(obj))
       res.send({code: 200, data: obj, msg: '获取缓存成功'})
@@ -54,6 +57,7 @@ router.post('/addserve',(req,res) => {
   }
 
   pool.query(sql,[v.str,v.url,v.money],(err,result) => {
+    if (err) throw err;
     result.affectedRows > 0?
       res.send({code: 200, data: null, msg: '添加服务成功'})
     :
@@ -73,7 +77,7 @@ router.post('/addvehicle',(req,res) => {
   }
 
   pool.query(sql,[v.name,Number(v.money)],(err,result) => {
-    console.log(result)
+    if (err) throw err;
     result.affectedRows > 0?
       res.send({code: 200, data: null, msg: '添加汽车类型成功'})
     :

@@ -21,6 +21,7 @@ let order = require('./router/order.js');
 let user = require('./router/user.js');
 let buff = require('./router/buff.js');
 let upload = require('./router/upload.js');
+let banner = require('./router/banner.js');
 
 app.listen(3000)
 
@@ -31,3 +32,4 @@ app.use('/order', order);
 app.use('/user', user);
 app.use('/upload', upload);
 app.use('/buff', buff);
+app.use('/banner', banner);

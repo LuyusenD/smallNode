@@ -87,6 +87,7 @@ router.post('/login',(req,res) => {
     let sql = `UPDATE admin SET ip = ?, login = ? WHERE id = ?;`
 
     pool.query(sql,[ip,1,id],(err,result) => {
+      if (err) throw err;
       if (result.affectedRows > 0) {
         res.send({code: 200, data: {id, username}, msg: '登录成功'})
         return
@@ -109,6 +110,7 @@ router.post('/out',(req,res) => {
   new Promise(open => {
     let sql = `SELECT * FROM admin WHERE id = ? && username = ?`
     pool.query(sql,[v.id,v.username],(err,result) => {
+      if (err) throw err;
       if (result.length < 1) {
         res.send({code: 401, data: null, msg: '非法请求'})
         return
@@ -124,6 +126,7 @@ router.post('/out',(req,res) => {
     let sql = `UPDATE admin SET ip = ?, login = ? WHERE id = ?;`
 
     pool.query(sql,['',0,v.id],(err,result) => {
+      if (err) throw err;
       if (result.affectedRows > 0) {
         res.send({code: 200, data: null, msg: '退出登录成功'})
       }
@@ -144,6 +147,7 @@ router.post('/addadmin',(req,res) => {
     let sql = `SELECT * FROM admin WHERE id = ? && username = ?`
 
     pool.query(sql,[v.adminId,v.adminName],(err,result) => {
+      if (err) throw err;
       if (result.length < 1) {
         res.send({code: 401, data: null, msg: '非法添加'})
       }
@@ -154,6 +158,7 @@ router.post('/addadmin',(req,res) => {
     let sql = `INSERT INTO admin (id, username, password, ip, login, email) VALUES (NULL, ?, ?, NULL, 0,?);`
 
     pool.query(sql,[v.username,v.password,v.email],(err,result) => {
+      if (err) throw err;
       if (result) {
         res.send({code: 200, data: null, msg: '添加管理用户成功'})
       } else {
@@ -176,6 +181,7 @@ router.post('/deladmin',(req,res) => {
   new Promise(open => {
     let sql = `SELECT * FROM admin WHERE id = ? && username = ?`
     pool.query(sql,[v.id,v.username],(err,result) => {
+      if (err) throw err;
       if (result.length < 1) {
         res.send({code: 401, data: null, msg: '非法请求'})
         return
@@ -186,6 +192,7 @@ router.post('/deladmin',(req,res) => {
   .then(v => {
     let sql = `DELETE FROM admin WHERE id = ?`
     pool.query(sql,[v],(err,result) => {
+      if (err) throw err;
       if (result.affectedRows > 0)
         res.send({code: 200, data: null, msg: '删除成功'})
       else 
@@ -207,6 +214,7 @@ router.post('/changepassword', (req,res) => {
   new Promise(open => {
     let sql = `SELECT * FROM admin WHERE id = ? && username = ? && password = ?`
     pool.query(sql,[v.id,v.username,v.oldpassword],(err,result) => {
+      if (err) throw err;
       if (result.length < 1) {
         res.send({code: 401, data: null, msg: '非法请求'})
         return
@@ -217,6 +225,7 @@ router.post('/changepassword', (req,res) => {
   .then(id => {
     let sql = `UPDATE admin SET password = ?, login = 0 WHERE id = ?`
     pool.query(sql,[v.newpassword,id],(err,result) => {
+      if (err) throw err;
       if (result.affectedRows > 0) {
         res.send({code: 200, data: null, msg: '修改密码成功'})
       } else {
@@ -240,6 +249,7 @@ router.post('/forget',(req,res) => {
   new Promise(open => {
     let sql = `SELECT * FROM admin WHERE username = ? && email = ?`
     pool.query(sql,[v.username,v.email],(err,result) => {
+      if (err) throw err;
       if (result.length < 1) {
         res.send({code: 401, data: null, msg: '非法请求'})
         return
