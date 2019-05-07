@@ -86,16 +86,29 @@ router.post('/addvehicle',(req,res) => {
 })
 
 //后台管理 - 加个管理
-router.post('/setmoney',(req,res) => {
-  let v = req.body,
-      parameter = tools.parameter(v,['buffs'])
+router.get('/setmoney',(req,res) => {
+  let v = req.query,
+      parameter = tools.parameter(v,['type','id','money']),
+      arr = ['serve','vehicle']
 
   if (parameter) {
     res.send(parameter)
     return
   }
 
+  if (!arr.includes(v.type)) {
+    return
+  }
+  v.type == 'vehicle' ? v.type = 'vehicle_type' : ''
+  let sql = `UPDATE ${v.type} SET money = ? WHERE id = ?`
   
+  pool.query(sql,[v.money,v.id],(err,result) => {
+    if (err) throw err;
+    if (result.affectedRows > 0)
+      res.send({code: 200, data: null, msg: `更新${v.type}成功`})
+    else
+      res.send({code: 401, data: null, msg: '更新失败'})
+  })
 })
 
 module.exports = router

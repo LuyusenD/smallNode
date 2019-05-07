@@ -10,8 +10,8 @@ const router = express.Router()
 const pool = require('../pool.js')
 const tools = require('../util/generate.js')
 
-router.get('/add',(req,res) => {
-  let v = req.query,
+router.post('/add',(req,res) => {
+  let v = req.body,
       parameter = tools.parameter(v,['url']),
       sql = `INSERT INTO banner (url) VALUES (?)`
 
@@ -29,8 +29,8 @@ router.get('/add',(req,res) => {
   })
 })
 
-router.get('/update',(req,res) => {
-  let v = req.query,
+router.post('/update',(req,res) => {
+  let v = req.body,
       parameter = tools.parameter(v,['url','id']),
       sql = `UPDATE banner SET url = ? WHERE id = ?`
 
@@ -48,8 +48,8 @@ router.get('/update',(req,res) => {
   })
 })
 
-router.get('/del',(req,res) => {
-  let v = req.query,
+router.post('/del',(req,res) => {
+  let v = req.body,
       parameter = tools.parameter(v,['id']),
       sql = `DELETE FROM banner WHERE id = ?`
 
