@@ -10,6 +10,14 @@ const router = express.Router()
 const pool = require('../pool.js')
 const tools = require('../util/generate.js')
 
+router.get('/getbanner',(req,res) => {
+  let sql = `SELECT * FROM banner`
+  pool.query(sql,[],(err,result) => {
+    if (err) throw err;
+    res.send({code: 200, data: {total: result.length,list: result}, msg: '获取banner成功'})
+  })
+})
+
 router.post('/add',(req,res) => {
   let v = req.body,
       parameter = tools.parameter(v,['url']),
