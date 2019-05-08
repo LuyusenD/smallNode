@@ -51,7 +51,7 @@ CREATE TABLE `banner` (
 
 CREATE TABLE `serve` (
   `id` INT NOT NULL COMMENT '编号' PRIMARY KEY AUTO_INCREMENT,
-  `name` varchar(8) NOT NULL COMMENT '服务名称',
+  `name` varchar(64) NOT NULL COMMENT '服务名称',
   `icon` varchar(256) NOT NULL COMMENT '服务icon',
   `money` INT NOT NULL COMMENT '价格'
 );
