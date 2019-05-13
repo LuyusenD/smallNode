@@ -4,6 +4,7 @@
  * @date    2019-03-14 14:29:02
  */
 
+console.log(Date.now())
 
 const bodyParse = require("body-parser")
 const express=require('express')
