@@ -13,7 +13,16 @@ const tools = require('../util/generate.js')
 let buffs = {}
 // 获取服务类型 及 订单类型缓存
 router.get('/test',(req,res) => {
-  res.writeHead(200,{'Access-Control-Allow-Origin':'*'})
+  console.log(req.headers);
+  res.writeHead(200,{
+    'token': req.headers.token,
+    'Access-Control-Expose-Headers': 'token',
+  })
+  // console.log(req.request);
+  // res.setHeader('Access-Control-Allow-Origin','*')
+  // res.setHeader('Access-Control-Allow-Headers','xToken')
+  // res.setHeader('Access-Control-Expose-Headers','xToken')
+  // res.setHeader('Access-Control-Allow-Method','POST,GET')
   res.write(JSON.stringify({code: 200, data: 'test', msg: 'test'}))
   res.end()
 })

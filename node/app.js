@@ -4,13 +4,22 @@
  * @date    2019-03-14 14:29:02
  */
 
-console.log(Date.now())
+// console.log(Date.now())
 
 const bodyParse = require("body-parser")
 const express=require('express')
 // const https = require('https')
 const fs = require('fs')
 let app = express()
+
+
+app.all('*', function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "token");
+	res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+	res.header("Content-Type", "application/json;charset=utf-8");
+	next();
+});
 
 // const option = {
 	// key: fs.readFileSync('/etc/nginx/cert/2123911.key'),

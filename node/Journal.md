@@ -74,3 +74,26 @@
 #              id:   1 (该服务的id)
 #              money： 66(金额)
 #   优化api
+#
+# 2019/05/17
+#   新增(更新)
+#     1. banner/add or del or update or getbanner 新增banner操作
+#          参数：
+#             add接口:
+#                 url(图片路径)
+#             del接口:
+#                 id(banner ID)
+#             update接口:
+#                 url(图片路径)
+#                 id(banner ID)
+#	    2. buff/setmoney  新增设置金额
+#          参数:
+#              type: server(服务 / 车类型)
+#              id:   1 (该服务的id)
+#              money： 66(金额)
+#   优化api
+#     1. sql更新
+#     2. addorder 下单接口
+#           oAddress 字段 更新为  startAddress [起始地址]
+#           endAddress [终始地点]
+#           kilometre [公里] 计算出公里数
