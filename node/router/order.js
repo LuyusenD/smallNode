@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 
  * @authors Alones (7242586@qq.com)
  * @date    2019-03-14 23:29:02
@@ -10,7 +10,7 @@ const router = express.Router()
 const pool = require('../pool.js')
 const tools = require('../util/generate.js')
 const config = require('../config.js')
-let arr = ['id','oId','oName','oTel','oAddress','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle']
+let arr = ['id','oId','oName','oTel','startAddress', 'endAddress', 'kilometre','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle']
 // 后台管理 - 获取订单接口
 router.get('/allorder', (req, res) => {
   let sql = `SELECT ${arr.join(',')}  FROM the_order WHERE deleteTime = 0`
@@ -21,19 +21,19 @@ router.get('/allorder', (req, res) => {
 })
 // 立即下单
 router.post('/addorder',(req, res) => {
-  let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)`
+  let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   let oId = tools.generateOid(`Z24`),
       time = tools.generateTime(),
       ciphertext = tools.md5(oId),
       v = req.body,
-      arr = ["oName","oTel","oAddress","oType","oTime","openId"],
+      arr = ["oName","oTel","startAddress", "endAddress", "kilometre","oType","oTime","openId"],
       parameter = tools.parameter(v,arr)
 
   if (parameter) {
     res.send(parameter)
     return
   }
-
+console.log(222222222)
   new Promise((open,err) => {
     let testSql = `SELECT id,name FROM serve WHERE id = ?`
     pool.query(testSql,[v.oType],(err,result) => {
@@ -44,6 +44,7 @@ router.post('/addorder',(req, res) => {
         res.send({code: -1, data: null, msg: '服务类型错误'})
     })
   }).then(() => {
+	console.log(111111111111111111111111111)
     pool.query(sql,[oId,v.oName,v.oTel,v.startAddress,v.endAddress,v.kilometre,time,0,v.oType,1,v.oVehicle,v.oTime,v.oRemark || '',v.openId,ciphertext],(err,result)=>{
       if (err) throw err;
       result ? res.send({code: 200, data: null,msg: '下单成功'}) : res.send({code: 3000, data: null, msg: '下单失败'})

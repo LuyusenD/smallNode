@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 
  * @authors Alones (7242586@qq.com)
  * @date    2019-03-17 01:17:02
@@ -28,6 +28,7 @@ router.get('/test',(req,res) => {
 })
 
 router.get('/',(req,res) => {
+  console.log('Hello')
   let obj = {}
   new Promise((open) => {
     let sql = `SELECT * FROM serve`

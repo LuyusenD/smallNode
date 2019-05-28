@@ -1,4 +1,4 @@
-/**
+﻿/**
  * 
  * @authors Alones (7242586@qq.com)
  * @date    2019-03-16 16:17:02
@@ -86,7 +86,7 @@ router.post('/login',(req,res) => {
     let {id,username} = v
     let sql = `UPDATE admin SET ip = ?, login = ? WHERE id = ?;`
 
-    pool.query(sql,[ip,1,id],(err,result) => {
+    pool.query(sql,[ip,0,id],(err,result) => {
       if (err) throw err;
       if (result.affectedRows > 0) {
         res.send({code: 200, data: {id, username}, msg: '登录成功'})
