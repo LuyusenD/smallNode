@@ -50,6 +50,14 @@ router.get('/',(req,res) => {
     pool.query(sql,[],(err,result) => {
       if (err) throw err;
       obj.vehicle = result
+      getmoney()
+    })
+  }
+  function getmoney () {
+    let sql = `SELECT * FROM money`
+    pool.query(sql,[],(err,result) => {
+      if (err) throw err;
+      obj.money = result
       buffs = JSON.parse(JSON.stringify(obj))
       res.send({code: 200, data: obj, msg: '获取缓存成功'})
     })
@@ -118,6 +126,26 @@ router.get('/setmoney',(req,res) => {
       res.send({code: 200, data: null, msg: `更新${v.type}成功`})
     else
       res.send({code: 401, data: null, msg: '更新失败'})
+  })
+})
+
+//后台管理-修改公里小时 价格
+router.post('/updatemoney',(req,res) => {
+  let v = req.body,
+      sql = `UPDATE money SET money = ? WHERE name = ?`,
+      parameter = tools.parameter(v,['name','money'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+
+  pool.query(sql,[v.money,v.name],(err,result) => {
+    if (err) throw err;
+    result.affectedRows > 0?
+      res.send({code: 200, data: null, msg: '修改成功'})
+    :
+      res.send({code: 401, data: null, msg: '修改出错'})
   })
 })
 
