@@ -12,7 +12,7 @@ class tools {
   }
   generateOid (v) {
     let d = new Date()
-    let num = 3 - [1].toString().length
+    let num = 3 - [v].toString().length
     return `${d.getFullYear()}${d.getMonth() < 10 ? '0' + (d.getMonth()+1) : d.getMonth()+1}${d.getDate()}${num == 0 ? '' : num == 1 ? '0' : '00' }${v}`
   }
   generateTime () {

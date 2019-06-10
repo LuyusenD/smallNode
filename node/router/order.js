@@ -10,14 +10,16 @@ const router = express.Router()
 const pool = require('../pool.js')
 const tools = require('../util/generate.js')
 const config = require('../config.js')
-let num = 2
+let num = 99
 
 setInterval(v => {
     let d = new Date(),
         h = d.getHours(),
-	m = d.getMinutes(),
-	s = d.getSeconds()
-    if (h == m == s == 0) num = 1 
+        m = d.getMinutes(),
+        s = d.getSeconds()
+    if (h == 0 && m == 0 && s == 0) {
+      num = 1 
+    }
 }, 1000)
 
 let arr = ['id','oId','oName','oTel','startAddress', 'endAddress', 'kilometre','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle']
@@ -30,13 +32,13 @@ router.get('/allorder', (req, res) => {
   })
 })
 // 立即下单
-router.post('/addorder',(req, res) => {
+router.get('/addorder',(req, res) => {
 	console.log('num'+ num)
   let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   let oId = tools.generateOid(num),
       time = tools.generateTime(),
       ciphertext = tools.md5(oId),
-      v = req.body,
+      v = req.query,
       arr = ["oName","oTel","startAddress", "endAddress", "kilometre","oType","oTime","openId"],
       parameter = tools.parameter(v,arr)
 
@@ -44,7 +46,6 @@ router.post('/addorder',(req, res) => {
     res.send(parameter)
     return
   }
-console.log(222222222)
   new Promise((open,err) => {
     let testSql = `SELECT id,name FROM serve WHERE id = ?`
     pool.query(testSql,[v.oType],(err,result) => {
@@ -55,12 +56,11 @@ console.log(222222222)
         res.send({code: -1, data: null, msg: '服务类型错误'})
     })
   }).then(() => {
-	console.log(111111111111111111111111111)
     pool.query(sql,[oId,v.oName,v.oTel,v.startAddress,v.endAddress,v.kilometre,time,0,v.oType,1,v.oVehicle,v.oTime,v.oRemark || '',v.openId,ciphertext],(err,result)=>{
       if (err) throw err;
       if (result){
-	num += 1
-console.log('num'+ num)
+        num += 1
+        console.log('num'+ num)
 	res.send({code: 200, data: null,msg: '下单成功'})
       }else{ 
 	res.send({code: 3000, data: null, msg: '下单失败'})
