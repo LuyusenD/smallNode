@@ -10,6 +10,16 @@ const router = express.Router()
 const pool = require('../pool.js')
 const tools = require('../util/generate.js')
 const config = require('../config.js')
+let num = 2
+
+setInterval(v => {
+    let d = new Date(),
+        h = d.getHours(),
+	m = d.getMinutes(),
+	s = d.getSeconds()
+    if (h == m == s == 0) num = 1 
+}, 1000)
+
 let arr = ['id','oId','oName','oTel','startAddress', 'endAddress', 'kilometre','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle']
 // 后台管理 - 获取订单接口
 router.get('/allorder', (req, res) => {
@@ -21,8 +31,9 @@ router.get('/allorder', (req, res) => {
 })
 // 立即下单
 router.post('/addorder',(req, res) => {
+	console.log('num'+ num)
   let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
-  let oId = tools.generateOid(`Z24`),
+  let oId = tools.generateOid(num),
       time = tools.generateTime(),
       ciphertext = tools.md5(oId),
       v = req.body,
@@ -47,7 +58,13 @@ console.log(222222222)
 	console.log(111111111111111111111111111)
     pool.query(sql,[oId,v.oName,v.oTel,v.startAddress,v.endAddress,v.kilometre,time,0,v.oType,1,v.oVehicle,v.oTime,v.oRemark || '',v.openId,ciphertext],(err,result)=>{
       if (err) throw err;
-      result ? res.send({code: 200, data: null,msg: '下单成功'}) : res.send({code: 3000, data: null, msg: '下单失败'})
+      if (result){
+	num += 1
+console.log('num'+ num)
+	res.send({code: 200, data: null,msg: '下单成功'})
+      }else{ 
+	res.send({code: 3000, data: null, msg: '下单失败'})
+      }
     })
   }).catch(() => {
     res.send({code: 500, msg: '服务出错'})
