@@ -10,7 +10,7 @@ const router = express.Router()
 const pool = require('../pool.js')
 const tools = require('../util/generate.js')
 const config = require('../config.js')
-let num = 99
+let num = 10
 
 setInterval(v => {
     let d = new Date(),
@@ -32,13 +32,13 @@ router.get('/allorder', (req, res) => {
   })
 })
 // 立即下单
-router.get('/addorder',(req, res) => {
+router.post('/addorder',(req, res) => {
 	console.log('num'+ num)
   let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   let oId = tools.generateOid(num),
       time = tools.generateTime(),
       ciphertext = tools.md5(oId),
-      v = req.query,
+      v = req.body,
       arr = ["oName","oTel","startAddress", "endAddress", "kilometre","oType","oTime","openId"],
       parameter = tools.parameter(v,arr)
 
@@ -175,7 +175,11 @@ router.get('/userorder',(req,res) => {
   pool.query(sql,[v.openId],(err,result) => {
     if (err) throw err
     if (result.length > 0) {
-      res.send({code: 200, data: {total: result.length, data: result}, msg: '请求用户订单成功'})
+      let ress = []
+      for (let i = 0;i<result.length; i++) {
+	if (result[i].deleteTime < 1) ress.push(result[i])
+      }
+      res.send({code: 200, data: {total: ress.length, data: ress}, msg: '请求用户订单成功'})
     } else {
       res.send({code: 200, data: null, msg: '该用户暂无订单'})
     }
