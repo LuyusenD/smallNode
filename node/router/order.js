@@ -22,7 +22,7 @@ setInterval(v => {
     }
 }, 1000)
 
-let arr = ['id','oId','oName','oTel','startAddress', 'endAddress', 'kilometre','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle']
+let arr = ['id','oId','oName','oTel','startAddress', 'endAddress', 'kilometre','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle','money']
 // 后台管理 - 获取订单接口
 router.get('/allorder', (req, res) => {
   let sql = `SELECT ${arr.join(',')}  FROM the_order WHERE deleteTime = 0`
@@ -34,7 +34,7 @@ router.get('/allorder', (req, res) => {
 // 立即下单
 router.post('/addorder',(req, res) => {
 	console.log('num'+ num)
-  let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+  let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5,money) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   let oId = tools.generateOid(num),
       time = tools.generateTime(),
       ciphertext = tools.md5(oId),
@@ -56,7 +56,7 @@ router.post('/addorder',(req, res) => {
         res.send({code: -1, data: null, msg: '服务类型错误'})
     })
   }).then(() => {
-    pool.query(sql,[oId,v.oName,v.oTel,v.startAddress,v.endAddress,v.kilometre,time,0,v.oType,1,v.oVehicle,v.oTime,v.oRemark || '',v.openId,ciphertext],(err,result)=>{
+    pool.query(sql,[oId,v.oName,v.oTel,v.startAddress,v.endAddress,v.kilometre,time,0,v.oType,1,v.oVehicle,v.oTime,v.oRemark || '',v.openId,ciphertext,v.money],(err,result)=>{
       if (err) throw err;
       if (result){
         num += 1
@@ -104,6 +104,24 @@ router.post('/delorder',(req,res) => {
     })
   }).catch(() => {
     res.send({code: 500, msg: '服务出错'})
+  })
+})
+//后台管理订单金额修改
+router.get('/setmoneyorder',(req,res) => {
+  let sql = `UPDATE the_order SET money = ? WHERE oId = ?`,
+      v = req.query,
+      parameter = tools.parameter(v,['oId','money'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+  pool.query(sql,[v.money,v.oId],(err,result) => {
+    if (err) throw err;
+    if (result.affectedRows > 0) 
+      res.send({code: 200, data: null, msg: '更改金额成功'})
+    else
+      res.send({code: 3000, data: null, msg: '更改金额失败'})
   })
 })
 // 用户完成订单 / 已支付接口更新 / 后台管理订单状态
