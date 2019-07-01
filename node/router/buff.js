@@ -149,4 +149,44 @@ router.post('/updatemoney',(req,res) => {
   })
 })
 
+//后台管理-删除服务 车类型
+router.post('/delvehicle',(req,res) => {
+  let v = req.body,
+      sql = `DELETE FROM vehicle_type WHERE id = ?`,
+      parameter = tools.parameter(v,['id'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+
+  pool.query(sql,[v.id],(err,result) => {
+    if (err) throw err;
+    result.affectedRows > 0?
+      res.send({code: 200, data: null, msg: '删除成功'})
+    :
+      res.send({code: 401, data: null, msg: '删除出错'})
+  })
+})
+
+//后台管理-删除服务 车类型
+router.post('/delserver',(req,res) => {
+  let v = req.body,
+      sql = `DELETE FROM serve WHERE id = ?`,
+      parameter = tools.parameter(v,['id'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+
+  pool.query(sql,[v.id],(err,result) => {
+    if (err) throw err;
+    result.affectedRows > 0?
+      res.send({code: 200, data: null, msg: '删除成功'})
+    :
+      res.send({code: 401, data: null, msg: '删除出错'})
+  })
+})
+
 module.exports = router

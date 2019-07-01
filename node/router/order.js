@@ -41,7 +41,7 @@ router.post('/addorder',(req, res) => {
       v = req.body,
       arr = ["oName","oTel","startAddress", "endAddress", "kilometre","oType","oTime","openId"],
       parameter = tools.parameter(v,arr)
-
+console.log(v.money)
   if (parameter) {
     res.send(parameter)
     return
@@ -61,7 +61,7 @@ router.post('/addorder',(req, res) => {
       if (result){
         num += 1
         console.log('num'+ num)
-	res.send({code: 200, data: null,msg: '下单成功'})
+	res.send({code: 200, data: {oId},msg: '下单成功'})
       }else{ 
 	res.send({code: 3000, data: null, msg: '下单失败'})
       }
@@ -112,6 +112,7 @@ router.get('/setmoneyorder',(req,res) => {
       v = req.query,
       parameter = tools.parameter(v,['oId','money'])
 
+	console.log(v.money)
   if (parameter) {
     res.send(parameter)
     return
