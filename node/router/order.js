@@ -22,7 +22,7 @@ setInterval(v => {
     }
 }, 1000)
 
-let arr = ['id','oId','oName','oTel','startAddress', 'endAddress', 'kilometre','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle','money']
+let arr = ['id','oId','oName','oTel','startAddress', 'endAddress', 'kilometre','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle','money','server_cont']
 // 后台管理 - 获取订单接口
 router.get('/allorder', (req, res) => {
   let sql = `SELECT ${arr.join(',')}  FROM the_order WHERE deleteTime = 0`
@@ -34,14 +34,14 @@ router.get('/allorder', (req, res) => {
 // 立即下单
 router.post('/addorder',(req, res) => {
 	console.log('num'+ num)
-  let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5,money) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
+  let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5,money,server_cont) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   let oId = tools.generateOid(num),
       time = tools.generateTime(),
       ciphertext = tools.md5(oId),
       v = req.body,
       arr = ["oName","oTel","startAddress", "endAddress", "kilometre","oType","oTime","openId"],
       parameter = tools.parameter(v,arr)
-console.log(v.money)
+
   if (parameter) {
     res.send(parameter)
     return
@@ -56,7 +56,7 @@ console.log(v.money)
         res.send({code: -1, data: null, msg: '服务类型错误'})
     })
   }).then(() => {
-    pool.query(sql,[oId,v.oName,v.oTel,v.startAddress,v.endAddress,v.kilometre,time,0,v.oType,1,v.oVehicle,v.oTime,v.oRemark || '',v.openId,ciphertext,v.money],(err,result)=>{
+    pool.query(sql,[oId,v.oName,v.oTel,v.startAddress,v.endAddress,v.kilometre,time,0,v.oType,1,v.oVehicle,v.oTime,v.oRemark || '',v.openId,ciphertext,v.money,v.server_cont || ''],(err,result)=>{
       if (err) throw err;
       if (result){
         num += 1

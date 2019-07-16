@@ -189,4 +189,68 @@ router.post('/delserver',(req,res) => {
   })
 })
 
+router.get('/sercont',(req,res) => {
+  let sql = `select id,title,type from server_cont`
+  pool.query(sql,(err,result) => {
+    if (err) throw err;
+    result.length > 0 ?
+      res.send({code: 200, data: result, msg: '查询服务内容成功', ps: '类型为1的时候 属于清洁内容， 2为 家具安装内容'})
+    :
+      res.send({code: 401, data: null, msg: '服务出错'})
+  })
+})
+
+router.get('/sercont/add',(req,res) => {
+  let v = req.query,
+      parameter = tools.parameter(v,['title','type'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+  let sql = `INSERT INTO server_cont (title, type) VALUES (?,?) `
+  pool.query(sql,[v.title,v.type],(err,result) => {
+    if (err) throw err;
+    result.affectedRows > 0 ?
+      res.send({code: 200, data: null, msg: '添加成功'})
+    :
+      res.send({code: 401, data: null, msg: '服务出错'})
+  })
+})
+
+router.get('/sercont/del',(req,res) => {
+  let v = req.query,
+      parameter = tools.parameter(v,['id'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+  let sql = `DELETE FROM server_cont WHERE id = ? `
+  pool.query(sql,[v.id],(err,result) => {
+    if (err) throw err;
+    result.affectedRows > 0 ?
+      res.send({code: 200, data: null, msg: '删除成功'})
+    :
+      res.send({code: 401, data: null, msg: '服务出错'})
+  })
+})
+
+router.get('/sercont/update',(req,res) => {
+  let v = req.query,
+      parameter = tools.parameter(v,['id','title','type'])
+
+  if (parameter) {
+    res.send(parameter)
+    return
+  }
+  let sql = `UPDATE server_cont SET title = ?,type = ? WHERE id = ?`
+  pool.query(sql,[v.title,v.type,v.id],(err,result) => {
+    if (err) throw err;
+    result.affectedRows > 0 ?
+      res.send({code: 200, data: null, msg: '更改成功'})
+    :
+      res.send({code: 401, data: null, msg: '服务出错'})
+  })
+})
 module.exports = router
