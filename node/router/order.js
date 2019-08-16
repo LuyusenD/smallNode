@@ -10,6 +10,7 @@ const router = express.Router()
 const pool = require('../pool.js')
 const tools = require('../util/generate.js')
 const config = require('../config.js')
+const request = require('request')
 let num = 10
 
 setInterval(v => {
@@ -36,7 +37,24 @@ router.get('/allorder', (req, res) => {
   })
 })
 // 立即下单
-router.post('/addorder',(req, res) => {
+router.get('/addorder',(req, res) => {
+  // new Promise((open,err) => {
+  //   request.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx95f9d0da92ac236f&secret=36a7c6d8a73e8aa8e4ff5721525dc2d0',function (err, response, body) {
+  //     open(JSON.parse(body).access_token)
+  //   })
+  // }).then(v => {
+  //   console.log(v)
+  //   request.post({
+  //     url: `https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=${v}`,
+  //     form: {
+  //       access_token: v,
+  //       touser: 'openid'
+  //     }
+  //   },function (err,response, body) {
+  //     console.log(body)
+  //   })
+  // })
+  // return 
 	console.log('num'+ num)
   let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5,money,server_cont) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   let oId = tools.generateOid(num),

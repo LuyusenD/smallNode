@@ -25,9 +25,9 @@ let buff = require('./router/buff.js');
 let upload = require('./router/upload.js');
 let banner = require('./router/banner.js');
 
-//app.listen(3000)
+app.listen(3000)
 
-https.createServer(option, app).listen(3000)
+// https.createServer(option, app).listen(3000)
 app.use(express.static(__dirname + '/static'))
 // 挂载
 app.use('/order', order);
