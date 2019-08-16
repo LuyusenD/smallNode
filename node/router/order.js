@@ -25,7 +25,11 @@ setInterval(v => {
 let arr = ['id','oId','oName','oTel','startAddress', 'endAddress', 'kilometre','createTime','deleteTime','oType','oState','oTime','oRemark','evaluate', 'oVehicle','money','server_cont']
 // 后台管理 - 获取订单接口
 router.get('/allorder', (req, res) => {
-  let sql = `SELECT ${arr.join(',')}  FROM the_order WHERE deleteTime = 0`
+  console.log(req.query)
+  let v = req.query
+  let sql = `SELECT ${arr.join(',')}  FROM the_order WHERE deleteTime = 0 ${v.startTime && v.endTime ? `AND createTime >= ${new Date(v.startTime).getTime()} AND createTime <= ${new Date(v.endTime).getTime()}` : ''}`
+  
+ console.log(sql)
   pool.query(sql,[],(err,result)=>{
     if (err) throw err;
     res.send({code: 200, data: {total: result.length, data: result}})

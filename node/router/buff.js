@@ -28,7 +28,7 @@ router.get('/test',(req,res) => {
 })
 
 router.get('/',(req,res) => {
-  console.log('Hello')
+  console.log('Hello' + new Date())
   let obj = {}
   new Promise((open) => {
     let sql = `SELECT * FROM serve`
@@ -86,15 +86,15 @@ router.post('/addserve',(req,res) => {
 // 后台管理 - 添加车类型
 router.post('/addvehicle',(req,res) => {
   let v = req.body,
-      sql = `INSERT INTO vehicle_type (name, money) VALUES (?,?)`,
-      parameter = tools.parameter(v,['name','money'])
+      sql = `INSERT INTO vehicle_type (name, money,type) VALUES (?,?,?)`,
+      parameter = tools.parameter(v,['name','money','type'])
 
   if (parameter) {
     res.send(parameter)
     return
   }
 
-  pool.query(sql,[v.name,Number(v.money)],(err,result) => {
+  pool.query(sql,[v.name,Number(v.money),v.type],(err,result) => {
     if (err) throw err;
     result.affectedRows > 0?
       res.send({code: 200, data: null, msg: '添加汽车类型成功'})
