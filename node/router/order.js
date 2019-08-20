@@ -38,32 +38,6 @@ router.get('/allorder', (req, res) => {
 })
 // 立即下单
 router.get('/addorder',(req, res) => {
-  new Promise((open,err) => {
-    request.get('https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx95f9d0da92ac236f&secret=36a7c6d8a73e8aa8e4ff5721525dc2d0',function (err, response, body) {
-      open(JSON.parse(body).access_token)
-    })
-  }).then(v => {
-    console.log(v)
-    request.post({
-      url: `https://api.weixin.qq.com/cgi-bin/message/wxopen/template/uniform_send?access_token=${v}`,
-      form: {
-        access_token: v,
-        touser: 'oMp1W472En__RkMFdTLgL6nHENQ8',
-        mp_template_msg: {
-          template_id: 'igBLRYvJt8fhVwhv5sSvsRAtditH20cLZUGnmWtj220',
-          appid: 'wx95f9d0da92ac236f',
-          miniprogram:{
-            appid:"wx95f9d0da92ac236f",
-            pagepath:"/pages/index/index"
-          },
-          data: {} 
-        }
-      }
-    },function (err,response, body) {
-      console.log(body)
-    })
-  })
-  return 
 	console.log('num'+ num)
   let sql = `INSERT INTO the_order (oId, oName, oTel, startAddress, endAddress, kilometre, createTime, deleteTime, oType, oState,oVehicle, oTime, oRemark, openId, md5,money,server_cont) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`
   let oId = tools.generateOid(num),
@@ -92,9 +66,10 @@ router.get('/addorder',(req, res) => {
       if (result){
         num += 1
         console.log('num'+ num)
-	res.send({code: 200, data: {oId},msg: '下单成功'})
+        tools.postMail('fwq1969@yahoo.com','a','s',true)
+	      res.send({code: 200, data: {oId},msg: '下单成功'})
       }else{ 
-	res.send({code: 3000, data: null, msg: '下单失败'})
+	      res.send({code: 3000, data: null, msg: '下单失败'})
       }
     })
   }).catch(() => {

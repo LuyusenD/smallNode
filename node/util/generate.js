@@ -33,9 +33,9 @@ class tools {
   randomStr () {
     return Math.random().toString(36).substr(6)
   }
-  postMail (a,b,c) {
+  postMail (a,b,c,d) {
     // toEmail,user,pwd
-    postEmail(a,b,c)
+    postEmail(a,b,c,d)
   }
 }
 
